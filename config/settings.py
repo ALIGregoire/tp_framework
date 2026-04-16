@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
-
+import dj_database_url
 import os
 from pathlib import Path
 
@@ -100,14 +100,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv("POSTGRES_DB", "reclamations_db"),
-        'USER': os.getenv("POSTGRES_USER", "postgres"),
-        'PASSWORD': os.getenv("POSTGRES_PASSWORD", "base2010"),
-        'HOST': os.getenv("POSTGRES_HOST", "localhost"),
-        'PORT': os.getenv("POSTGRES_PORT", "5432"),
-    }
+    'default': dj_database_url.config(
+        default=os.getenv("DATABASE_URL"),
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
 
 # ---- Django REST Framework ---
